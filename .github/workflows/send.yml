@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     permissions:
-      contents: read
+      contents: write
     env:
       DOUYIN_COOKIE: ${{ secrets.DOUYIN_COOKIE }}
       DOUYIN_CONFIG: ${{ secrets.DOUYIN_CONFIG }}
@@ -109,6 +109,25 @@ jobs:
             python run.py --dry-run
           else
             python run.py
+          fi
+      - name: Save status for dashboard
+        run: |
+          mkdir -p status
+          if [ -f artifacts/result.json ]; then
+            cp artifacts/result.json status/last_result.json
+          else
+            echo '{"dry_run":false,"finished_at":"","results":[],"error":"no result yet"}' > status/last_result.json
+          fi
+      - name: Commit status
+        run: |
+          git config user.name "douyin-bot"
+          git config user.email "bot@example.com"
+          git add status/last_result.json
+          if git diff --cached --quiet; then
+            echo "无状态变化，跳过提交"
+          else
+            git commit -m "update dashboard status (${{ github.run_id }})"
+            git push
           fi
       - name: Upload diagnostics
         if: failure()
