@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>抖音续火花 · 发送状态</title>
+<style>
+  :root { --bg:#17181c; --card:#23252b; --border:#303338; --ok:#22c55e; --bad:#ef4444; --text:#e6e8ec; --muted:#979ca4; --accent:#4D6BFE; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,"Microsoft YaHei UI","PingFang SC",sans-serif; background:var(--bg); color:var(--text); padding:16px; min-height:100vh; }
+  h1 { font-size:20px; margin-bottom:4px; }
+  .sub { color:var(--muted); font-size:13px; margin-bottom:16px; }
+  .card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:16px; margin-bottom:12px; }
+  .row { display:flex; justify-content:space-between; align-items:center; }
+  .big { font-size:28px; font-weight:800; }
+  .ok { color:var(--ok); } .bad { color:var(--bad); }
+  .muted { color:var(--muted); font-size:13px; }
+  .tag { padding:3px 10px; border-radius:999px; font-size:12px; font-weight:600; }
+  .tag.ok { background:rgba(34,197,94,.15); color:var(--ok); }
+  .tag.bad { background:rgba(239,68,68,.15); color:var(--bad); }
+  .stats { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:16px 0; }
+  .stat { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:12px; text-align:center; }
+  .stat .n { font-size:22px; font-weight:800; }
+  .stat .l { font-size:12px; color:var(--muted); margin-top:2px; }
+  .list-item { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border); font-size:14px; }
+  .list-item:last-child { border-bottom:none; }
+  .empty { color:var(--muted); text-align:center; padding:30px 0; }
+  .refresh { width:100%; padding:12px; border:none; border-radius:12px; background:var(--accent); color:#fff; font-size:15px; font-weight:600; margin-top:8px; }
+  #updated { color:var(--muted); font-size:12px; margin-top:8px; text-align:center; }
+</style>
+</head>
+<body>
+  <h1>抖音自动续火花</h1>
+  <div class="sub">云端发送状态（只读）</div>
+
+  <div class="card">
+    <div class="row">
+      <span class="muted">最近一次运行</span>
+      <span id="modeTag" class="tag muted">…</span>
+    </div>
+    <div class="row" style="margin-top:10px">
+      <div id="statusText" class="big">…</div>
+      <span id="timeText" class="muted">…</span>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="n ok" id="okCount">-</div><div class="l">成功</div></div>
+    <div class="stat"><div class="n bad" id="badCount">-</div><div class="l">失败</div></div>
+    <div class="stat"><div class="n" id="totalCount">-</div><div class="l">总计</div></div>
+  </div>
+
+  <div id="detail"></div>
+
+  <button class="refresh" onclick="load()">刷新</button>
+  <div id="updated"></div>
+
+<script>
+async function load(){
+  const opt = {cache:'no-store'};
+  let data = null;
+  try { data = await (await fetch('status/last_result.json', opt)).json(); }
+  catch(e){ try { data = await (await fetch('last_result.json', opt)).json(); } catch(e2){ data = null; } }
+  const container = document.getElementById('detail');
+  const statusText = document.getElementById('statusText');
+  const modeTag = document.getElementById('modeTag');
+  const timeText = document.getElementById('timeText');
+  const okC = document.getElementById('okCount'), badC = document.getElementById('badCount'), totC = document.getElementById('totalCount');
+  if(!data){
+    statusText.textContent = '暂无数据';
+    modeTag.textContent = '未运行'; modeTag.className='tag muted';
+    timeText.textContent=''; okC.textContent='-'; badC.textContent='-'; totC.textContent='-';
+    container.innerHTML='<div class="empty">还没有运行记录。<br>去 GitHub Actions 触发一次「发送抖音消息」。</div>';
+    document.getElementById('updated').textContent='';
+    return;
+  }
+  const res = data.results || [];
+  const ok = res.filter(r=>r.status==='success').length;
+  const bad = res.filter(r=>r.status==='failed').length;
+  okC.textContent = ok; badC.textContent = bad; totC.textContent = res.length;
+  const dry = data.dry_run;
+  modeTag.textContent = dry ? '检查模式(Dry Run)' : '正式发送';
+  modeTag.className = 'tag ' + (dry ? '' : 'ok');
+  const hasFail = bad > 0;
+  statusText.textContent = hasFail ? '部分失败' : '全部成功';
+  statusText.className = 'big ' + (hasFail ? 'bad' : 'ok');
+  const ts = data.finished_at ? new Date(data.finished_at).toLocaleString('zh-CN') : '';
+  timeText.textContent = ts;
+  container.innerHTML = '';
+  if(res.length){
+    res.forEach(r=>{
+      const t = r.target || '?';
+      const st = r.status;
+      const cls = st==='success' ? 'ok' : 'bad';
+      const label = st==='success' ? '✓ 成功' : '✗ 失败';
+      const note = r.error ? ` <span class="muted">${r.error}</span>` : '';
+      container.insertAdjacentHTML('beforeend', `<div class="list-item"><span>${t}</span><span class="${cls}">${label}${note}</span></div>`);
+    });
+  } else {
+    container.innerHTML='<div class="empty">运行成功但没有明细记录</div>';
+  }
+  document.getElementById('updated').textContent = '更新于 ' + new Date().toLocaleTimeString('zh-CN');
+}
+load();
+</script>
+</body>
+</html>
