@@ -1,0 +1,181 @@
+{
+  "task_id": "daily-streak",
+  "dry_run": false,
+  "finished_at": "2026-08-24T12:46:06.198614+00:00",
+  "results": [
+    {
+      "target": "好友01",
+      "status": "success",
+      "sent": 1,
+      "error": null
+    },
+    {
+      "target": "好友02",
+      "status": "success",
+      "sent": 1,
+      "error": null
+    },
+    {
+      "target": "好友03",
+      "status": "success",
+      "sent": 1,
+      "error": null
+    },
+    {
+      "target": "好友04",
+      "status": "success",
+      "sent": 1,
+      "error": null
+    },
+    {
+      "target": "好友05",
+      "status": "success",
+      "sent": 1,
+      "error": null
+    },
+    {
+      "target": "好友06",
+      "status": "success",
+      "sent": 1,
+      "error": null
+    },
+    {
+      "target": "好友07",
+      "status": "success",
+      "sent": 1,
+      "error": null
+    },
+    {
+      "target": "好友08",
+      "status": "success",
+      "sent": 1,
+      "error": null
+    },
+    {
+      "target": "好友09",
+      "status": "success",
+      "sent": 1,
+      "error": null
+    },
+    {
+      "target": "好友10",
+      "status": "success",
+      "sent": 1,
+      "error": null
+    },
+    {
+      "target": "好友11",
+      "status": "success",
+      "sent": 1,
+      "error": null
+    },
+    {
+      "target": "好友12",
+      "status": "success",
+      "sent": 1,
+      "error": null
+    },
+    {
+      "target": "好友13",
+      "status": "success",
+      "sent": 1,
+      "error": null
+    },
+    {
+      "target": "好友14",
+      "status": "success",
+      "sent": 1,
+      "error": null
+    },
+    {
+      "target": "好友15",
+      "status": "success",
+      "sent": 1,
+      "error": null
+    },
+    {
+      "target": "好友16",
+      "status": "success",
+      "sent": 1,
+      "error": null
+    },
+    {
+      "target": "好友17",
+      "status": "success",
+      "sent": 1,
+      "error": null
+    },
+    {
+      "target": "好友18",
+      "status": "success",
+      "sent": 1,
+      "error": null
+    },
+    {
+      "target": "好友19",
+      "status": "success",
+      "sent": 1,
+      "error": null
+    },
+    {
+      "target": "好友20",
+      "status": "success",
+      "sent": 1,
+      "error": null
+    },
+    {
+      "target": "好友21",
+      "status": "success",
+      "sent": 1,
+      "error": null
+    },
+    {
+      "target": "好友22",
+      "status": "success",
+      "sent": 1,
+      "error": null
+    },
+    {
+      "target": "好友23",
+      "status": "success",
+      "sent": 1,
+      "error": null
+    },
+    {
+      "target": "好友24",
+      "status": "success",
+      "sent": 1,
+      "error": null
+    },
+    {
+      "target": "好友25",
+      "status": "success",
+      "sent": 1,
+      "error": null
+    },
+    {
+      "target": "好友26",
+      "status": "success",
+      "sent": 1,
+      "error": null
+    },
+    {
+      "target": "好友27",
+      "status": "success",
+      "sent": 1,
+      "error": null
+    },
+    {
+      "target": "好友28",
+      "status": "success",
+      "sent": 1,
+      "error": null
+    },
+    {
+      "target": "好友29",
+      "status": "success",
+      "sent": 1,
+      "error": null
+    }
+  ]
+}
